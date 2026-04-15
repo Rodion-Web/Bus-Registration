@@ -6,7 +6,7 @@
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 <p align="center">
-  🇷🇺 Русский | <a href="README.md">🇬🇧 English</a>
+  🇷🇺 Русский | <a href="README.eng.md">🇬🇧 English</a>
 </p>
 
 ---
