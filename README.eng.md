@@ -122,12 +122,6 @@ https://bus-jewell.ru/
 
 ---
 
-## 👨‍💻 Author
-
-Pet project demonstrating fullstack development and backend logic design.
-
----
-
 ## 💡 Future Improvements
 
 * Admin panel with authentication
