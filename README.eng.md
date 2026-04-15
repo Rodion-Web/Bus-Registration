@@ -9,7 +9,7 @@
 ![Stars](https://img.shields.io/github/stars/Rodion-Web/Bus-Registration?style=social)
 
 <p align="center">
-  🇬🇧 English | <a href="README.ru.md">🇷🇺 Русский</a>
+  🇬🇧 English | <a href="README.md">🇷🇺 Русский</a>
 </p>
 
 ---
