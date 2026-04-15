@@ -9,7 +9,7 @@
 ![Stars](https://img.shields.io/github/stars/Rodion-Web/Bus-Registration?style=social)
 
 <p align="center">
-  🇬🇧 English | <a href="README.md">🇷🇺 Русский</a>
+  🇬🇧 English | <a href="README.ru.md">🇷🇺 Русский</a>
 </p>
 
 ---
@@ -18,17 +18,29 @@
 
 A fullstack web application for managing bus registrations with seat limits, real-time availability tracking, and duplicate prevention.
 
+The application ensures data validation and enforces business logic while maintaining user data privacy.
+
 ---
 
 ## ⚙️ Features
 
-* User registration (name, phone, bus)
+* User registration (name, phone, bus selection)
 * Input validation
 * Duplicate prevention
-* Seat limit control
-* Passenger lists per bus
-* Staff display
+* Seat limit control per bus
+* Real-time seat availability
+* Staff information display
 * CSV export
+
+---
+
+## 🔒 Data Privacy & Security
+
+* Personal data (names, phone numbers) is **not exposed via public API**
+* All sensitive data is stored locally in `/data` directory
+* `/data` directory is excluded via `.gitignore`
+* Access to `/data` is restricted on the server level
+* Public API returns only aggregated data (counts, limits)
 
 ---
 
@@ -37,10 +49,11 @@ A fullstack web application for managing bus registrations with seat limits, rea
 * PHP (no frameworks)
 * REST API:
 
-  * `GET /api.php?action=state`
-  * `POST /api.php?action=submit`
-* JSON storage
-* File locking (`flock`)
+  * `GET /api.php?action=state` — public data (no personal info)
+  * `POST /api.php?action=submit` — user registration
+* JSON-based storage
+* CSV export generation
+* File locking (`flock`) to prevent race conditions
 
 ---
 
@@ -49,8 +62,16 @@ A fullstack web application for managing bus registrations with seat limits, rea
 * HTML, CSS, Vanilla JavaScript
 * Responsive UI
 * Fetch API
-* Real-time validation
+* Client-side validation
+* Real-time phone formatting
 * Toast notifications
+
+---
+
+## 🗄️ Data Storage
+
+* JSON — internal storage (not публичный)
+* CSV — export format
 
 ---
 
@@ -60,9 +81,11 @@ A fullstack web application for managing bus registrations with seat limits, rea
 
 * PHP 8+
 
+---
+
 ### Run locally
 
-```bash
+```bash id="n41o7j"
 git clone https://github.com/Rodion-Web/Bus-Registration.git
 cd Bus-Registration
 php -S localhost:8000
@@ -73,10 +96,18 @@ http://localhost:8000
 
 ---
 
+### 💡 Notes
+
+* No database required
+* Data files are created automatically
+* Designed for easy local setup
+
+---
+
 ## 📂 Project Structure
 
-```
-/data
+```id="6jzv8y"
+/data        # ignored (runtime data)
 api.php
 config.php
 function.php
@@ -87,10 +118,22 @@ index.html
 
 ## 🌐 Live Demo
 
-Coming soon...
+https://bus-jewell.ru/
 
 ---
 
 ## 👨‍💻 Author
 
-Pet project for demonstrating fullstack development skills
+Pet project demonstrating fullstack development and backend logic design.
+
+---
+
+## 💡 Future Improvements
+
+* Admin panel with authentication
+* Database integration (MySQL/PostgreSQL)
+* Rate limiting / anti-spam protection
+* Docker support
+* Migration to frameworks (Laravel / React)
+
+---
