@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Регистрация</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --card: rgba(15, 23, 42, 0.94);
+      --line: rgba(255, 255, 255, 0.08);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --success: rgba(16, 185, 129, 0.14);
+      --success-line: rgba(16, 185, 129, 0.3);
+      --danger: rgba(239, 68, 68, 0.14);
+      --danger-line: rgba(239, 68, 68, 0.3);
+      --shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(59, 130, 246, 0.16), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(139, 92, 246, 0.14), transparent 24%),
+        var(--bg);
+      padding: 12px;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+      backdrop-filter: blur(14px);
+      margin-bottom: 20px;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 9px;
+      font-size: 15px;
+      color: #dbe4f0;
+      font-weight: 700;
+    }
+
+    input {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      border-radius: 18px;
+      padding: 18px 16px;
+      font-size: 18px;
+      outline: none;
+      transition: 0.2s ease;
+    }
+
+    input:focus {
+      border-color: rgba(96, 165, 250, 0.9);
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .bus-grid {
+      display: grid;
+      gap: 12px;
+      max-height: 55vh;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .bus-grid::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .bus-grid::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.14);
+      border-radius: 999px;
+    }
+
+    .bus-wrap {
+      display: grid;
+      gap: 8px;
+      border: 2px solid #ffff;
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    .bus-option {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 22px;
+      padding: 18px;
+      transition: 0.2s ease;
+      text-align: left;
+      color: var(--text);
+    }
+
+    .bus-option:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+
+    .bus-option.full {
+      opacity: 0.8;
+      background: rgb(239 68 68);
+      border-color: rgb(208 0 0 / 22%);
+    }
+
+    .full-seat {
+      color: white !important;
+    }
+
+    .bus-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 0;
+    }
+
+    .bus-number {
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .bus-seats {
+      font-size: 14px;
+      color: var(--muted);
+      white-space: nowrap;
+      padding-top: 4px;
+    }
+
+    .bus-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .bus-select-btn,
+    .bus-list-toggle,
+    .bus-staff-toggle {
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #dbe4f0;
+      border-radius: 14px;
+      padding: 11px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+    }
+
+    .bus-select-btn {
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .bus-select-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .bus-list-toggle {
+      background: #079f9f;
+    }
+
+    .bus-staff-toggle {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .bus-list,
+    .bus-staff-box {
+      display: none;
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .bus-list.show,
+    .bus-staff-box.show {
+      display: block;
+    }
+
+    .bus-list ul,
+    .bus-staff-box ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .bus-list li,
+    .bus-staff-box li {
+      margin: 6px 0;
+      color: #e2e8f0;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .bus-list-empty {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .message {
+      display: none;
+      border-radius: 18px;
+      padding: 15px 16px;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.error {
+      background: var(--danger);
+      border: 1px solid var(--danger-line);
+      color: #fecaca;
+    }
+
+    .message.success {
+      background: var(--success);
+      border: 1px solid var(--success-line);
+      color: #bbf7d0;
+    }
+
+    .closed-box {
+      display: none;
+      margin-top: 12px;
+      border-radius: 20px;
+      padding: 16px;
+      color: #fecaca;
+      font-size: 15px;
+      line-height: 1.6;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.24);
+    }
+
+    .closed-box.show {
+      display: block;
+    }
+
+    .download-link {
+      display: inline-block;
+      margin-top: 10px;
+      color: #c4b5fd;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .toast {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      min-width: 260px;
+      max-width: 90%;
+      padding: 14px 16px;
+      border-radius: 16px;
+      font-size: 15px;
+      line-height: 1.5;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      text-align: center;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .toast.success {
+      background: rgba(16, 185, 129, 0.95);
+      color: #fff;
+    }
+
+    .toast.error {
+      background: rgba(239, 68, 68, 0.95);
+      color: #fff;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 10px;
+      }
+
+      .wrap {
+        max-width: 100%;
+      }
+
+      .card {
+        border-radius: 24px;
+        padding: 14px;
+      }
+
+      .form-grid {
+        gap: 14px;
+      }
+
+      label {
+        font-size: 16px;
+      }
+
+      input {
+        font-size: 18px;
+        padding: 18px 15px;
+        border-radius: 18px;
+      }
+
+      .bus-grid {
+        max-height: 52vh;
+      }
+
+      .bus-option {
+        padding: 16px;
+        border-radius: 20px;
+      }
+
+      .bus-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+
+      .bus-number {
+        font-size: 24px;
+      }
+
+      .bus-seats {
+        font-size: 15px;
+        white-space: normal;
+        padding-top: 0;
+      }
+
+      .bus-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .bus-select-btn,
+      .bus-list-toggle,
+      .bus-staff-toggle,
+      .bus-list li,
+      .bus-list-empty,
+      .bus-staff-box li,
+      .message,
+      .toast {
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="card">
+      <form id="signupForm" class="form-grid">
+        <div>
+          <label for="fullName">Фамилия Имя</label>
+          <input id="fullName" name="fullName" type="text" placeholder="Введите фамилию и имя" required />
+        </div>
+
+        <div>
+          <label for="phone">Номер телефона</label>
+          <input id="phone" name="phone" type="tel" placeholder="+7 (___) ___-__-__" required />
+        </div>
+
+        <div>
+          <label>Выбери автобус</label>
+          <div class="bus-grid" id="busGrid"></div>
+        </div>
+
+        <div id="errorMessage" class="message error"></div>
+        <div id="successMessage" class="message success"></div>
+      </form>
+
+      <div id="closedBox" class="closed-box">
+        Регистрация закрыта: все автобусы уже заполнены.
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    let state = {
+      counts: { '14': 0, '15': 0, '16': 0, '17': 0, '18': 0 },
+      buses: { '14': [], '15': [], '16': [], '17': [], '18': [] },
+      staff: {
+        '18': { mashpia: 'Натан Шустин', madrich1: 'Илана Ставропольская', madrich2: 'Наоми Алексеева' },
+        '17': { mashpia: 'Менахем Слонимский', madrich1: 'Маис Беньяминов', madrich2: 'Двора Слонимская' },
+        '16': { mashpia: 'Довид Шапиро', madrich1: 'Рафаэль Бенагуев', madrich2: 'Шуля Шведик' },
+        '15': { mashpia: 'Александр Лакшин', madrich1: 'Менахем Бушан', madrich2: 'Неся Бушан' },
+        '14': { mashpia: 'Мендел Клейнберг', madrich1: 'Гершон Безденежных', madrich2: 'Керен Безденежных' }
+      },
+      phones: [],
+      names: [],
+      entries: [],
+      limits: { '18': 40, '17': 42, '16': 42, '15': 24, '14': 42 },
+      order: ['18', '17', '16', '15', '14'],
+      downloadUrl: 'data/registrations.csv'
+    };
+
+    const busGrid = document.getElementById('busGrid');
+    const form = document.getElementById('signupForm');
+    const fullNameInput = document.getElementById('fullName');
+    const phoneInput = document.getElementById('phone');
+    const errorMessage = document.getElementById('errorMessage');
+    const successMessage = document.getElementById('successMessage');
+    const closedBox = document.getElementById('closedBox');
+    const downloadLink = document.getElementById('downloadLink');
+    const toast = document.getElementById('toast');
+
+    let toastTimer = null;
+
+    function showMessage(type, text) {
+      toast.className = 'toast ' + type;
+      toast.textContent = text;
+      toast.classList.add('show');
+
+      if (toastTimer) {
+        clearTimeout(toastTimer);
+      }
+
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    function clearMessages() {
+      errorMessage.className = 'message error';
+      successMessage.className = 'message success';
+      errorMessage.textContent = '';
+      successMessage.textContent = '';
+
+      if (toastTimer) {
+        clearTimeout(toastTimer);
+      }
+
+      toast.classList.remove('show');
+      toast.textContent = '';
+    }
+
+    function formatPhone(value) {
+      const digits = value.replace(/\D/g, '').slice(0, 11);
+      if (!digits) return '';
+
+      let normalized = digits;
+      if (digits[0] === '8') normalized = '7' + digits.slice(1);
+      if (digits[0] !== '7' && digits.length === 10) normalized = '7' + digits;
+
+      let result = '+7';
+      if (normalized.length > 1) result += ' (' + normalized.slice(1, 4);
+      if (normalized.length >= 4) result += ') ';
+      if (normalized.length > 4) result += normalized.slice(4, 7);
+      if (normalized.length >= 7) result += '-';
+      if (normalized.length > 7) result += normalized.slice(7, 9);
+      if (normalized.length >= 9) result += '-';
+      if (normalized.length > 9) result += normalized.slice(9, 11);
+      return result;
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function normalizeName(value) {
+      return String(value || '')
+        .trim()
+        .toLowerCase()
+        .replace(/ё/g, 'е')
+        .replace(/\s+/g, ' ');
+    }
+
+    function normalizePhone(value) {
+      let digits = String(value || '').replace(/\D/g, '');
+      if (digits.length === 11 && digits[0] === '8') digits = '7' + digits.slice(1);
+      if (digits.length === 10) digits = '7' + digits;
+      return digits;
+    }
+
+    function hasDuplicate(fullName, phone) {
+      const normalizedName = normalizeName(fullName);
+      const normalizedPhone = normalizePhone(phone);
+
+      const nameExists =
+        (state.names || []).includes(normalizedName) ||
+        (state.entries || []).some(item => normalizeName(item.fullName) === normalizedName);
+
+      const phoneExists =
+        (state.phones || []).includes(normalizedPhone) ||
+        (state.entries || []).some(item => normalizePhone(item.phone) === normalizedPhone);
+
+      if (nameExists && phoneExists) return 'Такой человек уже зарегистрирован.';
+      if (nameExists) return 'Пользователь с таким ФИО уже зарегистрирован.';
+      if (phoneExists) return 'Пользователь с таким номером телефона уже зарегистрирован.';
+      return '';
+    }
+
+    function allBusesFull() {
+      return state.order.every(bus => (state.counts[bus] || 0) >= (state.limits[bus] || 0));
+    }
+
+    function createBusListHtml(bus) {
+      const list = state.buses[bus] || [];
+      if (!list.length) {
+        return '<div class="bus-list-empty">Пока никто не записался</div>';
+      }
+      return '<ul>' + list.map(name => '<li>' + escapeHtml(name) + '</li>').join('') + '</ul>';
+    }
+
+    function createStaffHtml(bus) {
+      const s = state.staff[bus] || {};
+
+      return `
+        <ul>
+          <li><strong>Машпия:</strong> ${escapeHtml(s.mashpia || '—')}</li>
+          <li><strong>Мадрих:</strong> ${escapeHtml(s.madrich1 || '—')}</li>
+          <li><strong>Мадрих:</strong> ${escapeHtml(s.madrich2 || '—')}</li>
+        </ul>
+      `;
+    }
+
+    function renderBusOptions() {
+      busGrid.innerHTML = '';
+
+      state.order.forEach((bus) => {
+        const reserved = state.counts[bus] || 0;
+        const limit = state.limits[bus] || 0;
+        const left = limit - reserved;
+
+        const wrap = document.createElement('div');
+        wrap.className = 'bus-wrap';
+
+        const card = document.createElement('div');
+        card.className = 'bus-option';
+        if (left <= 0) card.classList.add('full');
+
+        card.innerHTML = `
+          <div class="bus-top">
+            <div class="bus-number">Автобус ${bus}</div>
+            <div class="bus-seats full-seat">${left > 0 ? `Осталось ${left}` : 'Мест нет'}</div>
+          </div>
+        `;
+
+        const actions = document.createElement('div');
+        actions.className = 'bus-actions';
+
+        const registerButton = document.createElement('button');
+        registerButton.type = 'button';
+        registerButton.className = 'bus-select-btn';
+        registerButton.textContent = 'Записаться';
+
+        if (left <= 0) {
+          registerButton.disabled = true;
+          registerButton.textContent = 'Нет мест';
+        }
+
+        registerButton.addEventListener('click', async () => {
+          if (left <= 0) return;
+
+          const fullName = fullNameInput.value.trim();
+          const phone = phoneInput.value.trim();
+
+          if (!fullName || !phone) {
+            showMessage('error', 'Введите ФИО и телефон перед регистрацией.');
+            return;
+          }
+
+          const duplicateMessage = hasDuplicate(fullName, phone);
+          if (duplicateMessage) {
+            showMessage('error', duplicateMessage);
+            return;
+          }
+
+          clearMessages();
+          registerButton.disabled = true;
+          registerButton.textContent = 'Отправка...';
+
+          try {
+            const response = await fetch('api.php?action=submit', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ fullName, phone, bus })
+            });
+
+            const result = await response.json();
+
+            state.counts = result.counts || state.counts;
+            state.buses = result.buses || state.buses;
+            state.staff = result.staff || state.staff;
+            state.phones = result.phones || state.phones;
+            state.names = result.names || state.names;
+            state.entries = result.entries || state.entries;
+            state.limits = result.limits || state.limits;
+            state.downloadUrl = result.downloadUrl || state.downloadUrl;
+
+            renderBusOptions();
+
+            if (result.ok) {
+              form.reset();
+              showMessage('success', result.message || `Вы записаны в автобус ${bus}.`);
+            } else {
+              showMessage('error', result.message || 'Ошибка регистрации.');
+            }
+          } catch (e) {
+            renderBusOptions();
+            showMessage('error', 'Ошибка соединения с сервером.');
+          }
+        });
+
+        const staffToggle = document.createElement('button');
+        staffToggle.type = 'button';
+        staffToggle.className = 'bus-staff-toggle';
+        staffToggle.textContent = 'Показать цевет';
+
+        const staffBox = document.createElement('div');
+        staffBox.className = 'bus-staff-box';
+        staffBox.innerHTML = createStaffHtml(bus);
+
+        staffToggle.addEventListener('click', () => {
+          const isOpen = staffBox.classList.contains('show');
+
+          if (isOpen) {
+            staffBox.classList.remove('show');
+            staffToggle.textContent = 'Показать цевет';
+          } else {
+            staffBox.classList.add('show');
+            staffToggle.textContent = 'Скрыть цевет';
+          }
+        });
+
+        const listToggle = document.createElement('button');
+        listToggle.type = 'button';
+        listToggle.className = 'bus-list-toggle';
+        listToggle.textContent = `Показать список (${reserved})`;
+
+        const listBox = document.createElement('div');
+        listBox.className = 'bus-list';
+        listBox.innerHTML = createBusListHtml(bus);
+
+        listToggle.addEventListener('click', () => {
+          const isOpen = listBox.classList.contains('show');
+
+          if (isOpen) {
+            listBox.classList.remove('show');
+            listToggle.textContent = `Показать список (${reserved})`;
+          } else {
+            listBox.classList.add('show');
+            listToggle.textContent = `Скрыть список (${reserved})`;
+          }
+        });
+
+        actions.appendChild(registerButton);
+        actions.appendChild(staffToggle);
+        actions.appendChild(listToggle);
+
+        wrap.appendChild(card);
+        wrap.appendChild(actions);
+        wrap.appendChild(staffBox);
+        wrap.appendChild(listBox);
+        busGrid.appendChild(wrap);
+      });
+
+      if (allBusesFull()) {
+        closedBox.classList.add('show');
+      } else {
+        closedBox.classList.remove('show');
+      }
+
+      if (downloadLink) {
+        downloadLink.href = state.downloadUrl || 'data/registrations.csv';
+      }
+    }
+
+    async function loadState() {
+      try {
+        const response = await fetch('api.php?action=state');
+        const result = await response.json();
+
+        if (result.ok) {
+          state.counts = result.counts || state.counts;
+          state.buses = result.buses || state.buses;
+          state.staff = result.staff || state.staff;
+          state.phones = result.phones || state.phones;
+          state.names = result.names || state.names;
+          state.entries = result.entries || state.entries;
+          state.limits = result.limits || state.limits;
+          state.downloadUrl = result.downloadUrl || state.downloadUrl;
+        } else {
+          showMessage('error', result.message || 'Не удалось загрузить данные.');
+        }
+      } catch (e) {
+        showMessage('error', 'Не удалось загрузить актуальные места.');
+      }
+
+      renderBusOptions();
+    }
+
+    phoneInput.addEventListener('input', function () {
+      this.value = formatPhone(this.value);
+    });
+
+    loadState();
+  </script>
+</body>
+
+</html>
