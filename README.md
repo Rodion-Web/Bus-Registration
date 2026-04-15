@@ -1,35 +1,30 @@
-# 🚌 Bus Registration System
+# 🚌 Система регистрации на автобусы
 
 ![PHP](https://img.shields.io/badge/PHP-8.x-blue)
 ![JavaScript](https://img.shields.io/badge/JavaScript-Vanilla-yellow)
 ![Status](https://img.shields.io/badge/status-active-success)
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Repo Size](https://img.shields.io/github/repo-size/Rodion-Web/Bus-Registration)
-![Last Commit](https://img.shields.io/github/last-commit/Rodion-Web/Bus-Registration)
-![Stars](https://img.shields.io/github/stars/Rodion-Web/Bus-Registration?style=social)
 
-Веб-приложение для регистрации пользователей на автобусные рейсы с учетом ограничений мест и предотвращением дублирующих записей.
+<p align="center">
+  🇷🇺 Русский | <a href="README.md">🇬🇧 English</a>
+</p>
 
 ---
 
 ## 📌 Описание
 
-Приложение позволяет пользователям записываться на автобусы, а администраторам — отслеживать загрузку рейсов и управлять списками пассажиров.
-
-Система автоматически проверяет корректность данных, предотвращает дублирование заявок и ограничивает количество мест для каждого автобуса.
+Веб-приложение для регистрации пользователей на автобусные рейсы с учетом ограничений мест и защитой от дублирующих записей.
 
 ---
 
 ## ⚙️ Функционал
 
 * Регистрация пользователя (ФИО, телефон, автобус)
-* Валидация данных (формат телефона, обязательные поля)
-* Предотвращение дубликатов (по ФИО и номеру)
-* Контроль лимита мест на автобус
-* Отображение оставшихся мест в реальном времени
-* Просмотр списка пассажиров по каждому автобусу
-* Отображение персонала (staff)
-* Уведомления об успешной/ошибочной регистрации
+* Валидация данных
+* Предотвращение дубликатов
+* Контроль количества мест
+* Просмотр списков пассажиров
+* Отображение персонала
 * Экспорт данных в CSV
 
 ---
@@ -41,9 +36,8 @@
 
   * `GET /api.php?action=state`
   * `POST /api.php?action=submit`
-* Работа с JSON как хранилищем
-* Генерация CSV-файла
-* File locking (`flock`)
+* Хранение данных в JSON
+* Защита от race condition (`flock`)
 
 ---
 
@@ -51,24 +45,32 @@
 
 * HTML, CSS, Vanilla JavaScript
 * Адаптивный интерфейс
-* Работа с API через `fetch`
+* Работа через fetch API
 * Валидация на клиенте
-* Форматирование телефона
-* Toast-уведомления
+* Уведомления
 
 ---
 
 ## 🚀 Запуск
 
+### Требования
+
+* PHP 8+
+
+### Локальный запуск
+
 ```bash
+git clone https://github.com/Rodion-Web/Bus-Registration.git
+cd Bus-Registration
 php -S localhost:8000
 ```
 
-Открыть: http://localhost:8000
+Открыть в браузере:
+http://localhost:8000
 
 ---
 
-## 📂 Структура
+## 📂 Структура проекта
 
 ```
 /data
@@ -82,6 +84,4 @@ index.html
 
 ## 👨‍💻 Автор
 
-Pet-проект для демонстрации fullstack-навыков
-
----
+Pet-проект для демонстрации навыков fullstack-разработки
