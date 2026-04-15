@@ -4,6 +4,9 @@
 ![JavaScript](https://img.shields.io/badge/JavaScript-Vanilla-yellow)
 ![Status](https://img.shields.io/badge/status-active-success)
 ![License](https://img.shields.io/badge/license-MIT-green)
+![Repo Size](https://img.shields.io/github/repo-size/Rodion-Web/Bus-Registration)
+![Last Commit](https://img.shields.io/github/last-commit/Rodion-Web/Bus-Registration)
+![Stars](https://img.shields.io/github/stars/Rodion-Web/Bus-Registration?style=social)
 
 <p align="center">
   🇷🇺 Русский | <a href="README.eng.md">🇬🇧 English</a>
